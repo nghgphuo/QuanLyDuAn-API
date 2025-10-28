@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role'
     ];
 
     /**
@@ -32,6 +33,24 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    // Admin có thể tạo nhiều tasks
+    public function createdTasks() 
+    {
+        return $this->hasMany(Task::class, 'created_by');
+    }
+
+    // User được giao nhiều Tasks
+    public function assignedTasks() 
+    {
+        return $this->hasMany(Task::class, 'assigned_to');
+    }
+
+    // Kiểm tra role
+    public function isAdmin() 
+    {
+        return $this->role === 'admin';
+    }
 
     /**
      * The attributes that should be cast.
