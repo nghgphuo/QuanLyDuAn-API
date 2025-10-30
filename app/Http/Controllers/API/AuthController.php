@@ -9,8 +9,12 @@ use App\Http\Requests\AuthRequests\RegisterRequest;
 use App\Http\Requests\AuthRequests\LoginRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Tymon\JWTAuth\Exceptions\JWTException;
-use Illuminate\Http\JsonResponse;;
+use Illuminate\Http\JsonResponse;
+use Tymon\JWTAuth\Facades\JWTAuth;
+
+;
 
 class AuthController extends Controller
 {
@@ -28,7 +32,7 @@ class AuthController extends Controller
         ], $result), 201);
     }
 
-    public function login(LoginRequest $request) : JsonResponse {
+    public function login(LoginRequest $request): JsonResponse {
         $result = $this->authService->login($request->validated());
 
         if (!$result) {
@@ -68,7 +72,7 @@ class AuthController extends Controller
             'success' => true,
             'token' => $newToken,
             'token_type' => 'bearer',
-            'expires_in' => auth('api')->factory()->getTTL() * 60
+            'expires_in' => JWTAuth::factory()->getTTL() * 60
         ]);
     }
 }

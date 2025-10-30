@@ -25,7 +25,7 @@ class AuthService
             'user' => $user,
             'token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth('api')->factory()->getTTL() * 60,
+            'expires_in' => JWTAuth::factory()->getTTL() * 60,
         ];
     }
 
@@ -39,7 +39,7 @@ class AuthService
             'user' => auth('api')->user(),
             'token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth('api')->factory()->getTTL() * 60,
+            'expires_in' => JWTAuth::factory()->getTTL() * 60,
         ];
     }
 
@@ -50,7 +50,7 @@ class AuthService
 
     public function refresh()
     {
-        return auth('api')->refresh();
+        return JWTAuth::refresh();
     }
 
     public function me()
