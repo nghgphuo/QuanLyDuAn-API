@@ -4,8 +4,8 @@ namespace App\Repositories;
 use App\Models\User;
 
 class UserRepository {
-    public function getAll() {
-        return User::select('id', 'name', 'role', 'email_verified_at', 'created_at', 'updated_at')->get();
+    public function getAll($perPage=10) {
+        return User::select('id', 'name', 'role', 'email_verified_at', 'created_at', 'updated_at')->paginate($perPage);
     }
 
     public function findById($id) {

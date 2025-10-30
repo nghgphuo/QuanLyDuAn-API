@@ -21,10 +21,17 @@ class UserController extends Controller
     /**
      * Lấy danh sách tất cả users
      */
-    public function index() {
+    public function index(Request $request) {
+        $perPage = $request->query('per_page', 10);
+        $users = $this->userService->getAllUsers($perPage);
+
         return response()->json([
             'success' => true,
-            'users' => $this->userService->getAllUsers(),
+            'current_page' => $users->currentPage(),
+            'per_page' => $users->perPage(),
+            'total' => $users->total(),
+            'last_page' => $users->lastPage(),
+            'users' => $users->items(),
         ], 200);
     }
 
