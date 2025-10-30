@@ -23,7 +23,7 @@ class UserController extends Controller
      */
     public function index(Request $request) {
         $perPage = $request->query('per_page', 10);
-        $users = $this->userService->getAllUsers($perPage);
+        $users = $this->userService->getAllWithPagination($perPage);
 
         return response()->json([
             'success' => true,

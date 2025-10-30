@@ -1,19 +1,19 @@
 <?php
 namespace App\Services;
 
-use App\Repositories\UserRepository;
+use App\Repositories\User\IUserRepository;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 
 class UserService {
     protected $userRepo;
 
-    public function __construct(UserRepository $userRepository) {
-        $this->userRepo = $userRepository;
+    public function __construct(IUserRepository $userRepo) {
+        $this->userRepo = $userRepo;
     }
 
-    public function getAllUsers($perPage=10) {
-        return $this->userRepo->getAll($perPage);
+    public function getAllWithPagination($perPage=10) {
+        return $this->userRepo->getAllWithPagination($perPage);
     }
 
     public function getUserById($id) {
