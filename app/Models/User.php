@@ -7,8 +7,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable
+class User extends Authenticatable implements JWTSubject
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -33,6 +34,27 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    /**
+     * Get the identifier that will be stored in the subject claim of the JWT.
+     * Trả về ID của user để lưu vào JWT
+     */
+    public function getJWTIdentifier() {
+        // Trả về primary key (id)
+        return $this->getKey();
+    }
+    
+    /**
+     * Return a key value array, containing any custom claims to be added to the JWT.
+     * Thêm các thông tin tùy chỉnh vào JWT
+    */
+    public function getJWTCustomClaims() {
+        return [
+            'role' => $this->role,
+            'email' => $this->email,
+        ];
+    }
+
 
     // Admin có thể tạo nhiều tasks
     public function createdTasks() 
@@ -59,5 +81,5 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-    ];
+    ];  
 }
