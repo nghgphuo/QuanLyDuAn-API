@@ -19,6 +19,10 @@ class UserRepository implements IUserRepository {
     public function findById($id) {
         return $this->model->findOrFail($id);
     }
+    
+    public function findByEmail(string $email) {
+        return $this->model->where('email', $email)->first();
+    }
 
     public function create(array $data) {
         return $this->model->create($data);

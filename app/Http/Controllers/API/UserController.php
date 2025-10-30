@@ -4,9 +4,9 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Http\Requests\ShowUserRequest;
-use App\Http\Requests\StoreUserRequest;
-use App\Http\Requests\UpdateUserRequest;
+use App\Http\Requests\UserRequests\ShowUserRequest;
+use App\Http\Requests\UserRequests\StoreUserRequest;
+use App\Http\Requests\UserRequests\UpdateUserRequest;
 use App\Services\UserService;
 use App\Models\User;
 

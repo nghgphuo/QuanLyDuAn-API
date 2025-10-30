@@ -15,6 +15,11 @@ interface IUserRepository
     */
     public function findById($id);
 
+    /*
+    * Tìm user theo email
+    */
+    public function findByEmail(string $email);
+
     /**
      * Tạo user mới
      */
