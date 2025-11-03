@@ -3,14 +3,9 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use App\Services\AuthService;
 use App\Http\Requests\AuthRequests\RegisterRequest;
 use App\Http\Requests\AuthRequests\LoginRequest;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Http\JsonResponse;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -24,16 +19,20 @@ class AuthController extends Controller
     }
 
     public function register(RegisterRequest $request) :JsonResponse {
-        $result = $this->authService->register($request->validated());
+        $data = $request->validated();
+        $result = $this->authService->register($data);
 
-        return response()->json(array_merge([
+        $responseData = array_merge([
             'success' => true,
             'message' => 'Đăng ký thành công',
-        ], $result), 201);
+        ], $result);
+
+        return response()->json($responseData, 201);
     }
 
     public function login(LoginRequest $request): JsonResponse {
-        $result = $this->authService->login($request->validated());
+        $credentials = $request->validated();
+        $result = $this->authService->login($credentials);
 
         if (!$result) {
             return response()->json([
@@ -50,15 +49,18 @@ class AuthController extends Controller
 
     public function me(): JsonResponse
     {
+        $user = $this->authService->me();
+
         return response()->json([
             'success' => true,
-            'user' => $this->authService->me(),
+            'user' => $user,
         ]);
     }
 
     public function logout(): JsonResponse
     {
         $this->authService->logout();
+
         return response()->json([
             'success' => true,
             'message' => 'Đăng xuất thành công'
@@ -68,6 +70,7 @@ class AuthController extends Controller
     public function refresh(): JsonResponse
     {
         $newToken = $this->authService->refresh();
+
         return response()->json([
             'success' => true,
             'token' => $newToken,

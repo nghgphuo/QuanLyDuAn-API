@@ -15,43 +15,26 @@ use App\Http\Controllers\API\AuthController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-// Routes công khai - tiền tố auth/
+// Authentication routes
 Route::prefix('auth')->group(function () {
+    // Public routes
     Route::post('register', [AuthController::class, 'register']);
     Route::post('login', [AuthController::class, 'login']);
+    
+    // Protected routes
+    Route::post('logout', [AuthController::class, 'logout'])
+        ->middleware('jwt.auth');
+    Route::post('refresh', [AuthController::class, 'refresh'])
+        ->middleware('jwt.auth');
+    Route::get('me', [AuthController::class, 'me'])
+        ->middleware('jwt.auth');
 });
 
-// Bảo vệ bằng middleware authentication (có JWT token) (hoặc jwt tùy bạn đang dùng)
-Route::middleware(['jwt.auth'])->group(function () {
-     // Auth routes
-    Route::prefix('auth')->group(function () {
-        Route::post('logout', [AuthController::class, 'logout']);
-        Route::post('refresh', [AuthController::class, 'refresh']);
-        Route::get('me', [AuthController::class, 'me']);
-    });
-
-    // Routes chỉ dành cho Admin
- 
-    Route::middleware(['admin'])->group(function () {
-        // User management
-        // Danh sách users
-        Route::get('/users', [UserController::class, 'index']);
-
-        // Xem chi tiết user
-        Route::get('/users/{id}', [UserController::class, 'show']);
-
-        // Tạo user mới (chỉ Admin)
-        Route::post('/users', [UserController::class, 'store']);
-
-        // Cập nhật user
-        Route::put('/users/{id}', [UserController::class, 'update']);
-        Route::patch('/users/{id}', [UserController::class, 'update']);
-
-        // Xóa user
-        Route::delete('/users/{id}', [UserController::class, 'destroy']);
-    });
+// User management routes - Admin only
+Route::prefix('users')->middleware(['jwt.auth', 'admin'])->group(function () {
+    Route::get('/', [UserController::class, 'index']);
+    Route::get('/{id}', [UserController::class, 'show']);
+    Route::post('/', [UserController::class, 'store']);
+    Route::match(['put', 'patch'], '/{id}', [UserController::class, 'update']);
+    Route::delete('/{id}', [UserController::class, 'destroy']);
 });
-
-
-

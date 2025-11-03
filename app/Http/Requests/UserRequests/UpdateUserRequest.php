@@ -3,6 +3,7 @@
 namespace App\Http\Requests\UserRequests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateUserRequest extends FormRequest
 {
@@ -24,6 +25,7 @@ class UpdateUserRequest extends FormRequest
     public function rules()
     {
          return [
+            'id' => ['required', 'integer', Rule::exists('users', 'id')],
             'name' => 'sometimes|required|string|max:255',
             'email' => 'sometimes|required|string|email|max:255|unique:users,email,',
             'password' => 'sometimes|required|string|min:8|confirmed',
@@ -34,6 +36,9 @@ class UpdateUserRequest extends FormRequest
     public function messages(): array
     {
         return [
+            'id.required' => 'ID người dùng không được để trống',
+            'id.integer' => 'ID phải là số nguyên',
+            'id.exists' => 'Người dùng không tồn tại',
             'name.required' => 'Tên không được để trống',
             'email.required' => 'Email không được để trống',
             'email.email' => 'Email không đúng định dạng',
@@ -42,5 +47,12 @@ class UpdateUserRequest extends FormRequest
             'password.confirmed' => 'Xác nhận mật khẩu không khớp',
             'role.in' => 'Vai trò phải là admin hoặc user',
         ];
+    }
+
+     protected function prepareForValidation() {
+        $this->merge([
+            // 'id' => $this.route('user.show'),
+            'id' => $this->route('id'), // Merge id từ route vào request
+        ]);
     }
 }

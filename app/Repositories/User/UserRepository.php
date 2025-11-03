@@ -3,6 +3,8 @@ namespace App\Repositories\User;
 
 use App\Repositories\User\IUserRepository;
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
+use Exception;
 
 class UserRepository implements IUserRepository {
 
@@ -17,11 +19,23 @@ class UserRepository implements IUserRepository {
     }
 
     public function findById($id) {
-        return $this->model->findOrFail($id);
+        $user = $this->model->find($id);
+
+        if(!$user) {
+            throw new Exception("User not found", 404);
+        }
+
+        return $user;
     }
     
     public function findByEmail(string $email) {
-        return $this->model->where('email', $email)->first();
+        $user = $this->model->where('email', $email)->first();
+
+        if(!$user) {
+            throw new Exception("User not found", 404);
+        }
+
+        return $user;
     }
 
     public function create(array $data) {
@@ -29,14 +43,25 @@ class UserRepository implements IUserRepository {
     }
 
     public function update($id, array $data) {
-        $user = $this->model->findOrFail($id);
+        $user = $this->model->find($id);
+
+        if(!$user) {
+    
+            throw new Exception("User not found", 404);
+        }
+
         $user->fill($data);
         $user->save();
         return $user;
     }
 
     public function delete($id) {
-        $user = $this->model->findOrFail($id);
+        $user = $this->model->find($id);
+
+         if(!$user) {
+            throw new Exception("User not found", 404);
+        }
+
         return $user->delete();
     }
 }

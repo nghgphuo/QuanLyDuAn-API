@@ -16,16 +16,16 @@ class UserService {
         return $this->userRepo->getAllWithPagination($perPage);
     }
 
-    public function getUserById($id) {
+    public function getById($id) {
         return $this->userRepo->findById($id);
     }
 
-    public function createUser(array $data) {
+    public function create(array $data) {
         $data['password'] = Hash::make($data['password']);
         return $this->userRepo->create($data);
     }
 
-    public function updateUser($id, array $data) {
+    public function update($id, array $data) {
 
         if(isset($data['password'])) {
             $data['password'] = Hash::make($data['password']);
@@ -34,7 +34,7 @@ class UserService {
         return $this->userRepo->update($id, $data);
     }
 
-    public function deleteUser($id) {
+    public function delete($id) {
         $user = $this->userRepo->findById($id);
 
         if ($user->id === Auth::id()) {

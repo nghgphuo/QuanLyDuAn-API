@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Repositories\User\IUserRepository;
 use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Facades\JWTAuth;
-use Tymon\JWTAuth\Exceptions\JWTException;
 
 class AuthService
 {
