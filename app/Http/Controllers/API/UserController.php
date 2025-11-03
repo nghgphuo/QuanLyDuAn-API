@@ -53,7 +53,8 @@ class UserController extends Controller
      * Sử dụng StoreUserRequest để validate
      */
     public function store(StoreUserRequest $request) {
-        $user = $this->userService->create($request->validated());
+        $data = $request->validated();
+        $user = $this->userService->create($data);
 
         $responseData = [
             'success' => true,
@@ -84,7 +85,6 @@ class UserController extends Controller
 
     /**
      * Xóa user
-     * test lại
      */
     public function destroy(DeleteUserRequest $request) {
         $id = $request->validated('id');

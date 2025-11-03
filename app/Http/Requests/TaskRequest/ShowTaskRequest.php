@@ -1,0 +1,56 @@
+<?php
+
+namespace App\Http\Requests\TaskRequest;
+
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+
+class ShowTaskRequest extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
+    {
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, mixed>
+     */
+    public function rules()
+    {
+        if ($this->routeIs('tasks.getByUser')) {
+            return [
+                'user_id' => ['required', 'integer', Rule::exists('users', 'id')],
+            ];
+        } 
+
+        return [
+            'id' => ['required', 'integer', Rule::exists('tasks', 'id')],
+        ];
+    }
+
+    public function messages() {
+        return [
+            'id.required' => 'Task Id không được để trống',
+            'id.integer' => 'Task Id phải là số nguyên',
+            'id.exists' => 'Task không tồn tại',
+            'user_id.required' => 'ID người dùng không được để trống',
+            'user_id.integer' => 'ID người dùng phải là số nguyên',
+            'user_id.exists' => 'Người dùng không tồn tại'
+        ];
+    }
+
+    protected function prepareForValidation() {
+        if ($this->routeIs('tasks.getByUser')) {
+            $this->merge(['user_id' => $this->route('user_id')]);
+        } else {
+            $this->merge(['id' => $this->route('id')]);
+        }
+    }
+}

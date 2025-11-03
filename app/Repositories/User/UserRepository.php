@@ -3,7 +3,6 @@ namespace App\Repositories\User;
 
 use App\Repositories\User\IUserRepository;
 use App\Models\User;
-use Illuminate\Support\Facades\Log;
 use Exception;
 
 class UserRepository implements IUserRepository {

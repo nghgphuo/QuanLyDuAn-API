@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\TaskController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,3 +39,15 @@ Route::prefix('users')->middleware(['jwt.auth', 'admin'])->group(function () {
     Route::match(['put', 'patch'], '/{id}', [UserController::class, 'update']);
     Route::delete('/{id}', [UserController::class, 'destroy']);
 });
+
+Route::middleware(['jwt.auth', 'admin'])->group(function () {
+    Route::get('/tasks', [TaskController::class, 'index']);
+    Route::get('/tasks/user/{user_id}', [TaskController::class, 'getByUser'])->name('tasks.getByUser');
+    Route::get('/tasks/{id}', [TaskController::class, 'show'])->name('tasks.show');
+    Route::post('/tasks', [TaskController::class, 'store']);
+    Route::put('/tasks/{id}', [TaskController::class, 'update']); 
+    Route::delete('/tasks/{id}', [TaskController::class, 'destroy']);
+    // Route::middleware('isAdmin')->group(function () {
+    // });
+});
+

@@ -20,11 +20,14 @@ class AdminMiddleware
         $user = auth('api')->user();
 
         // Kiểm tra user có tồn tại và có role admin không
-        if (!$user || $user->role !== 'admin') {
-            return response()->json([
+
+        $responseData = [
                 'success' => false,
                 'message' => 'Bạn không có quyền truy cập. Chỉ admin mới được phép.'
-            ], 403);
+        ];
+
+        if (!$user || $user->role !== 'admin') {
+            return response()->json($responseData, 403);
         }
 
         return $next($request);
