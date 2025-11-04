@@ -17,7 +17,7 @@ class UserService {
     }
 
     public function getById($id) {
-        return $this->userRepo->findById($id);
+        return $this->userRepo->find($id);
     }
 
     public function create(array $data) {
@@ -35,7 +35,7 @@ class UserService {
     }
 
     public function delete($id) {
-        $user = $this->userRepo->findById($id);
+        $user = $this->userRepo->find($id);
 
         if ($user->id === Auth::id()) {
             throw new \Exception('Không thể xóa chính mình', 403);

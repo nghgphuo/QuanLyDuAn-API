@@ -13,7 +13,7 @@ class UserRepository extends BaseRepository implements IUserRepository {
     }
 
     public function getAllWithPagination($perPage=10) {
-        return $this->model->select('id', 'name', 'role', 'email_verified_at', 'created_at', 'updated_at')->paginate($perPage);
+        return $this->model->select('id', 'name', 'email', 'role', 'email_verified_at', 'created_at', 'updated_at')->paginate($perPage);
     }
     
     public function findByEmail(string $email) {
