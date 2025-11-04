@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\TaskRequest;
 
+use App\Enums\StatusTaskEnum;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -25,12 +26,12 @@ class UpdateTaskRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => ['required', 'string', 'max:255'],
-            'description' => ['nullable', 'string'],
-            'deadline' => ['required', 'date', 'after_or_equal:today'],
-            'status' => ['required', Rule::in(['Chưa làm', 'Đang làm', 'Hoàn thành'])],
-            'priority' => ['required', Rule::in(['Thấp', 'Trung bình', 'Cao'])],
-            'assigned_to' => ['required', 'integer', Rule::exists('users', 'id')],
+            'title' => ['sometimes', 'required', 'string', 'max:255'],
+            'description' => ['sometimes', 'nullable', 'string'],
+            'deadline' => ['sometimes', 'required', 'date', 'after_or_equal:today'],
+            'status' => ['sometimes', 'required', Rule::in(StatusTaskEnum::values())],
+            'priority' => ['sometimes', 'required', Rule::in(['Thấp', 'Trung bình', 'Cao'])],
+            'assigned_to' => ['sometimes', 'required', 'integer', Rule::exists('users', 'id')],
         ];
     }
 
