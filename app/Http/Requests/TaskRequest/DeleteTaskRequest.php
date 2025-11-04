@@ -32,7 +32,7 @@ class DeleteTaskRequest extends FormRequest
         ];
     }
 
-     public function messages() {
+    public function messages() {
         return [
             'id.required' => 'Id Task không được để trống',
             'id.integer' => 'Id Task phải là số nguyên',

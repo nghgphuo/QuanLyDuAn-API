@@ -31,15 +31,14 @@ class ShowUserRequest extends FormRequest
 
     public function messages() {
         return [
-            'id.required' => 'ID người dùng không được để trống',
-            'id.integer' => 'ID phải là số nguyên',
+            'id.required' => 'Id người dùng không được để trống',
+            'id.integer' => 'Id phải là số nguyên',
             'id.exists' => 'Người dùng không tồn tại'
         ];
     }
 
     protected function prepareForValidation() {
         $this->merge([
-            // 'id' => $this.route('user.show'),
             'id' => $this->route('id'), // Merge id từ route vào request
         ]);
     }

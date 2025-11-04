@@ -39,9 +39,9 @@ class DeleteUserRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'id.required' => 'ID người dùng không được để trống',
-            'id.integer' => 'ID phải là số nguyên',
-            'id.min' => 'ID phải lớn hơn 0',
+            'id.required' => 'Id người dùng không được để trống',
+            'id.integer' => 'Id phải là số nguyên',
+            'id.min' => 'Id phải lớn hơn 0',
             'id.exists' => 'Người dùng không tồn tại hoặc đã bị xóa',
         ];
     }

@@ -29,7 +29,6 @@ class ShowTaskRequest extends FormRequest
                 'user_id' => ['required', 'integer', Rule::exists('users', 'id')],
             ];
         } 
-
         return [
             'id' => ['required', 'integer', Rule::exists('tasks', 'id')],
         ];
@@ -40,8 +39,8 @@ class ShowTaskRequest extends FormRequest
             'id.required' => 'Task Id không được để trống',
             'id.integer' => 'Task Id phải là số nguyên',
             'id.exists' => 'Task không tồn tại',
-            'user_id.required' => 'ID người dùng không được để trống',
-            'user_id.integer' => 'ID người dùng phải là số nguyên',
+            'user_id.required' => 'Id người dùng không được để trống',
+            'user_id.integer' => 'Id người dùng phải là số nguyên',
             'user_id.exists' => 'Người dùng không tồn tại'
         ];
     }

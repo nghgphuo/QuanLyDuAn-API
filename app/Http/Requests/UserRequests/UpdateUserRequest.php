@@ -36,8 +36,8 @@ class UpdateUserRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'id.required' => 'ID người dùng không được để trống',
-            'id.integer' => 'ID phải là số nguyên',
+            'id.required' => 'Id người dùng không được để trống',
+            'id.integer' => 'Id phải là số nguyên',
             'id.exists' => 'Người dùng không tồn tại',
             'name.required' => 'Tên không được để trống',
             'email.required' => 'Email không được để trống',
@@ -46,6 +46,7 @@ class UpdateUserRequest extends FormRequest
             'password.min' => 'Mật khẩu phải có ít nhất 8 ký tự',
             'password.required' => 'Mật khẩu phải có ít nhất 8 ký tự',
             'role.in' => 'Vai trò phải là admin hoặc user',
+            'role.required' => 'Role không được để trống'
         ];
     }
 

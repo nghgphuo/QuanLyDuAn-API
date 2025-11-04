@@ -19,7 +19,6 @@ class AuthService
         $user = $this->userRepo->create($data);
 
         $token = JWTAuth::fromUser($user);
-
         return [
             'user' => $user,
             'token' => $token,
@@ -33,7 +32,6 @@ class AuthService
         if (!$token = JWTAuth::attempt($credentials)) {
             return null;
         }
-
         return [
             'user' => auth('api')->user(),
             'token' => $token,

@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\UserRequests\ShowUserRequest;
 use App\Http\Requests\UserRequests\StoreUserRequest;
 use App\Http\Requests\UserRequests\UpdateUserRequest;
-use App\Services\UserService;
+use App\Services\User\UserService;
 
 class UserController extends Controller
 {
@@ -25,7 +25,7 @@ class UserController extends Controller
     */
     public function index(Request $request) {
         $perPage = $request->query('per_page', 10);
-        $users = $this->userService->getAllWithPagination($perPage);
+        $users = $this->userService->getPaginated($perPage);
         return $this->successResponse($users, 'Danh sách người dùng');
     }
 
@@ -36,7 +36,7 @@ class UserController extends Controller
     public function show(ShowUserRequest $request) {
         $id = $request->validated('id');
 
-        $user =  $this->userService->getById($id);
+        $user =  $this->userService->findById($id);
 
        return $this->successResponse($user, 'Thông tin chi tiết người dùng');
      }
@@ -46,14 +46,9 @@ class UserController extends Controller
     * Sử dụng StoreUserRequest để validate
     */
     public function store(StoreUserRequest $request) {
-        // Lấy toàn bộ dữ liệu người dùng gửi lên
         $data = $request->all();
-
-        // Chỉ chọn những trường cần thiết
         $arrData = collect($data)->only(['name', 'email', 'password', 'role'])->toArray();
-        
         $user = $this->userService->create($arrData);
-
         return $this->successResponse($user, 'Tạo người dùng mới thành công', 201);
       }
 
@@ -63,9 +58,7 @@ class UserController extends Controller
     */
     public function update(UpdateUserRequest $request) {
         $id = $request->input('id');
-        
         $user = $this->userService->update($id, $request->validated());
-
         return $this->successResponse($user, 'Cập nhật người dùng mới thành công');
     }
 
@@ -74,9 +67,7 @@ class UserController extends Controller
     */
     public function destroy(DeleteUserRequest $request) {
         $id = $request->validated('id');
-
         $this->userService->delete($id);
-
         return $this->successResponse(code: 204);
     }
 }
