@@ -23,7 +23,7 @@ class TaskService {
     }
 
     public function getById($id) {
-        return $this->taskRepo->findById($id);
+        return $this->taskRepo->find($id);
     }
 
     public function create(array $data) {

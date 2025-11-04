@@ -24,11 +24,11 @@ class UpdateUserRequest extends FormRequest
      */
     public function rules()
     {
-         return [
+        return [
             'id' => ['required', 'integer', Rule::exists('users', 'id')],
             'name' => 'sometimes|required|string|max:255',
             'email' => 'sometimes|required|string|email|max:255|unique:users,email,',
-            'password' => 'sometimes|required|string|min:8|confirmed',
+            'password' => 'sometimes|required|string|min:8',
             'role' => 'sometimes|required|in:admin,user',
         ];
     }
@@ -44,7 +44,7 @@ class UpdateUserRequest extends FormRequest
             'email.email' => 'Email không đúng định dạng',
             'email.unique' => 'Email đã tồn tại trong hệ thống',
             'password.min' => 'Mật khẩu phải có ít nhất 8 ký tự',
-            'password.confirmed' => 'Xác nhận mật khẩu không khớp',
+            'password.required' => 'Mật khẩu phải có ít nhất 8 ký tự',
             'role.in' => 'Vai trò phải là admin hoặc user',
         ];
     }

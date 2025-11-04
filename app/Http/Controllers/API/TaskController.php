@@ -7,12 +7,14 @@ use App\Http\Requests\TaskRequest\DeleteTaskRequest;
 use App\Http\Requests\TaskRequest\ShowTaskRequest;
 use App\Http\Requests\TaskRequest\StoreTaskRequest;
 use App\Http\Requests\TaskRequest\UpdateTaskRequest;
+use App\Traits\ApiResponseTrait;
 use Illuminate\Http\Request;
 use App\Services\TaskService;
 use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
+    use ApiResponseTrait;
     protected $taskService;
 
     public function __construct(TaskService $taskService) {
@@ -23,12 +25,7 @@ class TaskController extends Controller
         $perPage = $request->query('per_page', 10);
         $tasks = $this->taskService->getAllWithPagination($perPage);
         
-        $responseData = [
-            'success' => true,
-            'tasks' => $tasks
-        ];
-
-        return response()->json($responseData, 200);
+        return $this->successResponse($tasks, 'Danh sách tất cả Tasks');
     }
 
     /**
@@ -41,12 +38,7 @@ class TaskController extends Controller
 
         $tasks = $this->taskService->getByUser($user_id, $perPage);
 
-        $responseData = [
-            'success' => true,
-            'task' => $tasks,
-        ];
-
-        return response()->json($responseData, 200);
+        return $this->successResponse($tasks, 'Danh sách tất cả Tasks của người dùng có id: ' . $user_id);
     }
 
     /**
@@ -58,12 +50,7 @@ class TaskController extends Controller
 
         $task = $this->taskService->getById($id);
 
-        $responseData = [
-            'success' => true,
-            'task' => $task,
-        ];
-
-        return response()->json($responseData, 200);
+        return $this->successResponse($task, 'Thông tin chi tiết Task');
     }
 
     /**
@@ -79,13 +66,7 @@ class TaskController extends Controller
 
         $task = $this->taskService->create($data);
 
-        $responseData = [
-            'success' => true,
-            'message' => 'Tạo task mới thành công',
-            'task' => $task,
-        ];
-
-        return response()->json($responseData, 201);
+        return $this->successResponse($task, 'Tạo task mới thành công', 201);
     }
 
     /**
@@ -100,16 +81,9 @@ class TaskController extends Controller
             'created_by' => $user_id,
         ]);
 
-
         $task = $this->taskService->update($task_id, $data);
 
-        $responseData = [
-            'success' => true,
-            'message' => 'Tạo task mới thành công',
-            'task' => $task,
-        ];
-
-        return response()->json($responseData, 201);
+        return $this->successResponse($task, 'Cập nhật task thành công');
     }
 
     /**
@@ -121,11 +95,6 @@ class TaskController extends Controller
 
         $this->taskService->delete($id);
 
-        $responseData = [
-            'success' => true,
-            'message' => 'Xóa task thành công',
-        ];
-
-        return response()->json($responseData, 204);
+        return $this->successResponse(code: 204);
     }
 }

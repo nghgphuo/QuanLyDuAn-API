@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequests\DeleteUserRequest;
+use App\Traits\ApiResponseTrait;
 use Illuminate\Http\Request;
 use App\Http\Requests\UserRequests\ShowUserRequest;
 use App\Http\Requests\UserRequests\StoreUserRequest;
@@ -12,6 +13,7 @@ use App\Services\UserService;
 
 class UserController extends Controller
 {
+    use ApiResponseTrait;
     protected $userService;
 
     public function __construct(UserService $userService) {
@@ -19,83 +21,62 @@ class UserController extends Controller
     }
 
     /**
-     * Lấy danh sách tất cả users
-     */
+    * Lấy danh sách tất cả users
+    */
     public function index(Request $request) {
         $perPage = $request->query('per_page', 10);
         $users = $this->userService->getAllWithPagination($perPage);
-        $responseData = [
-            'success' => true,
-            'users' => $users,
-        ];
-        return response()->json($responseData, 200);
+        return $this->successResponse($users, 'Danh sách người dùng');
     }
 
-     /**
-     * Lấy chi tiết 1 user
-     * Sử dụng ShowUserRequest để validate ID
-     */
+    /**
+    * Lấy chi tiết 1 user
+    * Sử dụng ShowUserRequest để validate ID
+    */
     public function show(ShowUserRequest $request) {
         $id = $request->validated('id');
 
         $user =  $this->userService->getById($id);
 
-        $responseData = [
-            'success' => true,
-            'users' => $user,
-        ];
-
-        return response()->json($responseData, 200);
-    }
+       return $this->successResponse($user, 'Thông tin chi tiết người dùng');
+     }
 
     /**
-     * Tạo user mới
-     * Sử dụng StoreUserRequest để validate
-     */
+    * Tạo user mới
+    * Sử dụng StoreUserRequest để validate
+    */
     public function store(StoreUserRequest $request) {
-        $data = $request->validated();
-        $user = $this->userService->create($data);
+        // Lấy toàn bộ dữ liệu người dùng gửi lên
+        $data = $request->all();
 
-        $responseData = [
-            'success' => true,
-            'message' => 'Tạo người dùng thành công',
-            'user' => $user,
-        ];
+        // Chỉ chọn những trường cần thiết
+        $arrData = collect($data)->only(['name', 'email', 'password', 'role'])->toArray();
+        
+        $user = $this->userService->create($arrData);
 
-        return response()->json($responseData, 201);
-    }
+        return $this->successResponse($user, 'Tạo người dùng mới thành công', 201);
+      }
 
     /**
-     * Cập nhật user
-     * Sử dụng UpdateUserRequest để validate
-     */
+    * Cập nhật user
+    * Sử dụng UpdateUserRequest để validate
+    */
     public function update(UpdateUserRequest $request) {
         $id = $request->input('id');
         
         $user = $this->userService->update($id, $request->validated());
 
-        $responseData = [
-            'success' => true,
-            'message' => 'Cập nhật người dùng thành công',
-            'user' => $user,
-        ];
-
-        return response()->json($responseData, 201);
+        return $this->successResponse($user, 'Cập nhật người dùng mới thành công');
     }
 
     /**
-     * Xóa user
-     */
+    * Xóa user
+    */
     public function destroy(DeleteUserRequest $request) {
         $id = $request->validated('id');
 
         $this->userService->delete($id);
 
-        $responseData = [
-            'success' => true,
-            'message' => 'Xóa người dùng thành công',
-        ];
-
-        return response()->json($responseData, 204);
+        return $this->successResponse(code: 204);
     }
 }

@@ -25,7 +25,6 @@ class StoreTaskRequest extends FormRequest
     public function rules()
     {
         return [
-            'id' => ['required', 'integer', Rule::exists('tasks', 'id')],
             'title' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
             'deadline' => ['required', 'date', 'after_or_equal:today'],
@@ -38,9 +37,6 @@ class StoreTaskRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'id.required' => 'Task Id không được để trống',
-            'id.integer' => 'Task Id phải là số nguyên',
-            'id.exists' => 'Task không tồn tại',
             'title.required' => 'Tiêu đề không được để trống',
             'title.max' => 'Tiêu đề không được vượt quá 255 ký tự',
             'deadline.required' => 'Vui lòng chọn hạn chót cho công việc',
