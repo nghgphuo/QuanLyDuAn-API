@@ -23,7 +23,7 @@ class TaskController extends Controller
     public function index(Request $request) {
         $perPage = $request->query('per_page', 10);
         $tasks = $this->taskService->getPaginated($perPage);
-        return $this->successResponse($tasks, 'Danh sách tất cả Tasks');
+        return $this->successResponse( $tasks,  __('messages.tasks.list'));
     }
 
     /**
@@ -32,9 +32,9 @@ class TaskController extends Controller
     */
     public function getByUser(ShowTaskRequest $request) {
         $perPage = $request->query('per_page', 10);
-        $user_id = $request->validated('user_id');
-        $tasks = $this->taskService->findByUser($user_id, $perPage);
-        return $this->successResponse($tasks, 'Danh sách tất cả Tasks của người dùng có id: ' . $user_id);
+        $userId = $request->validated('user_id');
+        $tasks = $this->taskService->findByUser($userId, $perPage);
+        return $this->successResponse( $tasks,  __('messages.tasks.list_by_user', ['id' => $userId]));
     }
 
     /**
@@ -44,7 +44,7 @@ class TaskController extends Controller
     public function show(ShowTaskRequest $request) {
         $id = $request->validated('id');
         $task = $this->taskService->findById($id);
-        return $this->successResponse($task, 'Thông tin chi tiết Task');
+        return $this->successResponse( $task,  __('messages.tasks.list_by_id', ['id' => $id]));
     }
 
     /**
@@ -57,7 +57,7 @@ class TaskController extends Controller
             'created_by' => $user_id,
         ]);
         $task = $this->taskService->create($data);
-        return $this->successResponse($task, 'Tạo task mới thành công', 201);
+        return $this->successResponse( $task,  __('messages.tasks.created'), 201);
     }
 
     /**
@@ -71,7 +71,7 @@ class TaskController extends Controller
             'created_by' => $user_id,
         ]);
         $task = $this->taskService->update($task_id, $data);
-        return $this->successResponse($task, 'Cập nhật task thành công');
+        return $this->successResponse( $task,  __('messages.tasks.updated'));
     }
 
     /**

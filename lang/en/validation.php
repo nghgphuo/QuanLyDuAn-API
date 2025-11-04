@@ -13,6 +13,29 @@ return [
     |
     */
 
+    'title' => [
+        'required' => 'Title is required',
+        'max' => 'Title must not exceed 255 characters',
+    ],
+    'deadline' => [
+        'required' => 'Please select a deadline for the task',
+        'date' => 'Invalid deadline format',
+        'after_or_equal' => 'Deadline must be today or a future date',
+    ],
+    'status' => [
+        'required' => 'Status is required',
+        'in' => 'Status must be one of: Pending, In Progress, Completed',
+    ],
+    'priority' => [
+        'required' => 'Please select a priority level',
+        'in' => 'Priority must be one of: Low, Medium, High',
+    ],
+    'assigned_to' => [
+        'required' => 'Please assign this task to a user',
+        'integer' => 'Assigned user ID must be an integer',
+        'exists' => 'Assigned user does not exist',
+    ],
+
     'accepted' => 'The :attribute must be accepted.',
     'accepted_if' => 'The :attribute must be accepted when :other is :value.',
     'active_url' => 'The :attribute is not a valid URL.',

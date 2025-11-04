@@ -37,18 +37,18 @@ class StoreTaskRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'title.required' => 'Tiêu đề không được để trống',
-            'title.max' => 'Tiêu đề không được vượt quá 255 ký tự',
-            'deadline.required' => 'Vui lòng chọn hạn chót cho công việc',
-            'deadline.date' => 'Định dạng hạn chót không hợp lệ',
-            'deadline.after_or_equal' => 'Hạn chót phải là ngày hôm nay hoặc sau đó',
-            'status.required' => 'Trạng thái không được để trống',
-            'status.in' => 'Trạng thái chỉ được phép: Chưa làm, Đang làm, Hoàn thành',
-            'priority.required' => 'Vui lòng chọn mức độ ưu tiên',
-            'priority.in' => 'Ưu tiên chỉ được phép: Thấp, Trung bình, Cao',
-            'assigned_to.required' => 'Vui lòng chỉ định người được giao',
-            'assigned_to.integer' => 'Id người được giao phải là số nguyên',
-            'assigned_to.exists' => 'Người được giao không tồn tại trong hệ thống',           
-        ];
+        'title.required' => __('validation.title.required'),
+        'title.max' => __('validation.title.max'),
+        'deadline.required' => __('validation.deadline.required'),
+        'deadline.date' => __('validation.deadline.date'),
+        'deadline.after_or_equal' => __('validation.deadline.after_or_equal'),
+        'status.required' => __('validation.status.required'),
+        'status.in' => __('validation.status.in'),
+        'priority.required' => __('validation.priority.required'),
+        'priority.in' => __('validation.priority.in'),
+        'assigned_to.required' => __('validation.assigned_to.required'),
+        'assigned_to.integer' => __('validation.assigned_to.integer'),
+        'assigned_to.exists' => __('validation.assigned_to.exists'),
+    ];
     }
 }

@@ -26,7 +26,7 @@ class UserController extends Controller
     public function index(Request $request) {
         $perPage = $request->query('per_page', 10);
         $users = $this->userService->getPaginated($perPage);
-        return $this->successResponse($users, 'Danh sách người dùng');
+        return $this->successResponse( $users,  __('messages.user.list'));
     }
 
     /**
@@ -35,10 +35,8 @@ class UserController extends Controller
     */
     public function show(ShowUserRequest $request) {
         $id = $request->validated('id');
-
         $user =  $this->userService->findById($id);
-
-       return $this->successResponse($user, 'Thông tin chi tiết người dùng');
+        return $this->successResponse( $user,  __('messages.user.list_by_id', ['id' => $id]));
      }
 
     /**
@@ -49,7 +47,7 @@ class UserController extends Controller
         $data = $request->all();
         $arrData = collect($data)->only(['name', 'email', 'password', 'role'])->toArray();
         $user = $this->userService->create($arrData);
-        return $this->successResponse($user, 'Tạo người dùng mới thành công', 201);
+        return $this->successResponse( $user,  __('messages.user.created'), 201);
       }
 
     /**
@@ -59,7 +57,7 @@ class UserController extends Controller
     public function update(UpdateUserRequest $request) {
         $id = $request->input('id');
         $user = $this->userService->update($id, $request->validated());
-        return $this->successResponse($user, 'Cập nhật người dùng mới thành công');
+        return $this->successResponse( $user,  __('messages.user.updated'));
     }
 
     /**
