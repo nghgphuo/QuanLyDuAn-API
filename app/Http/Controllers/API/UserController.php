@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequests\DeleteUserRequest;
+use App\Notifications\NewAccountNotification;
 use App\Traits\ApiResponseTrait;
 use Illuminate\Http\Request;
 use App\Http\Requests\UserRequests\ShowUserRequest;
@@ -47,8 +48,13 @@ class UserController extends Controller
         $data = $request->all();
         $arrData = collect($data)->only(['name', 'email', 'password', 'role'])->toArray();
         $user = $this->userService->create($arrData);
+
+        // Link đổi mật khẩu (Frontend URL)
+        $resetUrl = "https://localhost:3000/reset-password?email=" . urlencode($user->email);
+        
+        $user->notify(new NewAccountNotification($user, $arrData['password'], $resetUrl));
         return $this->successResponse( $user,  __('messages.user.created'), 201);
-      }
+    }
 
     /**
     * Cập nhật user
