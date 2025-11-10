@@ -17,4 +17,13 @@ class TaskService extends BaseService implements ITaskService {
     public function findByUser($userId, $perPage) {
         return $this->taskRepo->findByUser($userId, $perPage);
     }
+
+    public function findById($id) {
+        return $this->taskRepo->findById($id);
+    }
+
+    public function getAllWithPagination($perPage = 10) {
+        return $this->taskRepo->getAllWithPagination($perPage);
+    }
+
 }

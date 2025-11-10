@@ -10,14 +10,32 @@ class TaskRepository extends BaseRepository implements ITaskRepository {
         parent::__construct($model);
     }
 
-    /*
-    * Lấy tasks được giao cho User hiện tại 
-    */
     public function findByUser($userId, $perPage=10){
-        return $this->model->query()
-            ->with(['assignee:id,name'])
+        $tasks = $this->model->query()
+            ->with(['assignee:id,name', 'creator:id,name'])
             ->where('assigned_to', $userId)
             ->orderBy('created_at', 'desc')
             ->paginate($perPage);
+
+        $tasks->getCollection()->transform(function($task) {
+            return $task->makeHidden(['created_by', 'assigned_to']);
+        });
+
+        return $tasks;
     }
+
+
+    public function findById($id) {
+        $task = $this->model->with(['assignee:id,name', 'creator:id,name'])->find($id);
+        return $task->makeHidden(['created_by', 'assigned_to']);
+    }
+
+    public function getAllWithPagination($perPage = 10) {
+        $tasks = $this->model->with(['assignee:id,name', 'creator:id,name'])->paginate($perPage);
+        $tasks->getCollection()->transform(function ($task) {
+            return $task->makeHidden(['created_by', 'assigned_to']);
+        });
+        return $tasks;
+    }
+
 }
