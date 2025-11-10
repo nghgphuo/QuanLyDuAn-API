@@ -21,8 +21,10 @@ class UserService extends BaseService implements IUserService{
     }
 
     public function update($id, array $data) {
-        if($data['password']) {
+        if (!empty($data['password'])) {
             $data['password'] = Hash::make($data['password']);
+        } else {
+            unset($data['password']);
         }
         return $this->repository->update($id, $data);
     }
